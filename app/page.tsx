@@ -290,7 +290,7 @@ export default function Home() {
                               fontSize: 10,
                               fontWeight: 700,
                               color: roleColors[p.role] ?? "#888",
-                              background: roleColors[p.role] + "22" ?? "#88888822",
+                              background: (roleColors[p.role] ?? "#888") + "22",
                               borderRadius: 6,
                               padding: "3px 8px",
                               border: `1px solid ${roleColors[p.role] ?? "#888"}44`,

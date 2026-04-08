@@ -175,13 +175,13 @@ export default function TeamCard({ team, index }: { team: Team; index: number })
           };
 
           const commonHandlers = {
-            onMouseEnter: (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => {
+            onMouseEnter: (e: MouseEvent<HTMLAnchorElement | HTMLDivElement>) => {
               if (isPlaying11) {
                 (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
                 (e.currentTarget as HTMLElement).style.transform = "translateX(4px)";
               }
             },
-            onMouseLeave: (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => {
+            onMouseLeave: (e: MouseEvent<HTMLAnchorElement | HTMLDivElement>) => {
               if (isPlaying11) {
                 (e.currentTarget as HTMLElement).style.background = i % 2 === 0 ? "transparent" : "#ffffff04";
                 (e.currentTarget as HTMLElement).style.transform = "translateX(0)";

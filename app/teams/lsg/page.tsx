@@ -184,7 +184,7 @@ export default function LSGPage() {
                         fontSize: 11,
                         fontWeight: 700,
                         color: roleColors[p.role] ?? "#888",
-                        background: roleColors[p.role] + "22" ?? "#88888822",
+                        background: (roleColors[p.role] ?? "#888") + "22",
                         borderRadius: 6,
                         padding: "4px 10px",
                         border: `1px solid ${roleColors[p.role] ?? "#888"}44`,
