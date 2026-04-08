@@ -1,0 +1,20 @@
+{
+  "name": "IPL 2026 Fan Hub",
+  "short_name": "IPL 2026",
+  "description": "Complete IPL 2026 coverage with all teams, playing XI squads, and player stats",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#ff6b00",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["sports", "entertainment"],
+  "lang": "en-US"
+}
