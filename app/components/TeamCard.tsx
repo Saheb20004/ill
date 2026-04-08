@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import type { MouseEvent } from "react";
 import type { Team } from "../data/teams";
 
 const roleColors: Record<string, string> = {
@@ -105,95 +106,105 @@ export default function TeamCard({ team, index }: { team: Team; index: number })
         {/* Player Rows */}
         {team.players.map((p, i) => {
           const isPlaying11 = team.playing11.includes(p.name);
-          const RowTag = isPlaying11 ? Link : "div";
-          const rowProps = isPlaying11
-            ? {
-                href: `/player/${encodeURIComponent(p.name)}?team=${encodeURIComponent(team.shortName)}`,
-                className: "player-row",
-              }
-            : { className: "" };
+          const rowContent = (
+            <>
+              <span style={{ fontSize: 12, color: "#444", fontWeight: 600 }}>{i + 1}</span>
 
-          return (
-            <RowTag
-              key={i}
-              {...rowProps}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "40px 1fr 160px 130px 40px",
-                padding: "11px clamp(12px, 2vw, 24px)",
-                borderBottom: "1px solid #ffffff07",
-                alignItems: "center",
-                background: i % 2 === 0 ? "transparent" : "#ffffff04",
-                color: "inherit",
-                textDecoration: "none",
-                cursor: isPlaying11 ? "pointer" : "default",
-                transition: isPlaying11 ? "background 0.18s, transform 0.18s" : "none",
-                animationDelay: visible ? `${i * 0.03}s` : "0s",
-              }}
-              onMouseEnter={(e) => {
-                if (isPlaying11) {
-                  (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
-                  (e.currentTarget as HTMLElement).style.transform = "translateX(4px)";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (isPlaying11) {
-                  (e.currentTarget as HTMLElement).style.background = i % 2 === 0 ? "transparent" : "#ffffff04";
-                  (e.currentTarget as HTMLElement).style.transform = "translateX(0)";
-                }
-              }}
-            >
-            <span style={{ fontSize: 12, color: "#444", fontWeight: 600 }}>{i + 1}</span>
-
-            <span
-              style={{
-                fontSize: 14,
-                fontWeight: p.name === team.captain ? 700 : 500,
-                color: p.name === team.captain ? team.accent : "#e8e8e8",
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-              }}
-            >
-              {p.name}
-              {p.name === team.captain && (
-                <span
-                  style={{
-                    fontSize: 9,
-                    background: team.accent,
-                    color: "#000",
-                    borderRadius: 4,
-                    padding: "1px 5px",
-                    fontWeight: 800,
-                    letterSpacing: 0.5,
-                  }}
-                >
-                  C
-                </span>
-              )}
-            </span>
-
-            <span>
               <span
                 style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  color: roleColors[p.role] ?? "#888",
-                  background: roleBg[p.role] ?? "#88888815",
-                  borderRadius: 6,
-                  padding: "3px 8px",
-                  border: `1px solid ${roleColors[p.role] ?? "#888"}33`,
+                  fontSize: 14,
+                  fontWeight: p.name === team.captain ? 700 : 500,
+                  color: p.name === team.captain ? team.accent : "#e8e8e8",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
                 }}
               >
-                {p.role}
+                {p.name}
+                {p.name === team.captain && (
+                  <span
+                    style={{
+                      fontSize: 9,
+                      background: team.accent,
+                      color: "#000",
+                      borderRadius: 4,
+                      padding: "1px 5px",
+                      fontWeight: 800,
+                      letterSpacing: 0.5,
+                    }}
+                  >
+                    C
+                  </span>
+                )}
               </span>
-            </span>
 
-            <span style={{ fontSize: 12, color: "#666" }}>{p.country}</span>
+              <span>
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 600,
+                    color: roleColors[p.role] ?? "#888",
+                    background: roleBg[p.role] ?? "#88888815",
+                    borderRadius: 6,
+                    padding: "3px 8px",
+                    border: `1px solid ${roleColors[p.role] ?? "#888"}33`,
+                  }}
+                >
+                  {p.role}
+                </span>
+              </span>
 
-            <span style={{ fontSize: 14, color: isPlaying11 ? "#22c55e" : "#333", fontWeight: 700 }}>›</span>
-          </RowTag>
-        );})}
+              <span style={{ fontSize: 12, color: "#666" }}>{p.country}</span>
+
+              <span style={{ fontSize: 14, color: isPlaying11 ? "#22c55e" : "#333", fontWeight: 700 }}>›</span>
+            </>
+          );
+
+          const rowStyle = {
+            display: "grid",
+            gridTemplateColumns: "40px 1fr 160px 130px 40px",
+            padding: "11px clamp(12px, 2vw, 24px)",
+            borderBottom: "1px solid #ffffff07",
+            alignItems: "center",
+            background: i % 2 === 0 ? "transparent" : "#ffffff04",
+            color: "inherit",
+            textDecoration: "none",
+            cursor: isPlaying11 ? "pointer" : "default",
+            transition: isPlaying11 ? "background 0.18s, transform 0.18s" : "none",
+            animationDelay: visible ? `${i * 0.03}s` : "0s",
+          };
+
+          const commonHandlers = {
+            onMouseEnter: (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => {
+              if (isPlaying11) {
+                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
+                (e.currentTarget as HTMLElement).style.transform = "translateX(4px)";
+              }
+            },
+            onMouseLeave: (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => {
+              if (isPlaying11) {
+                (e.currentTarget as HTMLElement).style.background = i % 2 === 0 ? "transparent" : "#ffffff04";
+                (e.currentTarget as HTMLElement).style.transform = "translateX(0)";
+              }
+            },
+          };
+
+          return isPlaying11 ? (
+            <Link
+              key={i}
+              href={`/player/${encodeURIComponent(p.name)}?team=${encodeURIComponent(team.shortName)}`}
+              className="player-row"
+              style={rowStyle}
+              {...commonHandlers}
+            >
+              {rowContent}
+            </Link>
+          ) : (
+            <div key={i} style={rowStyle} {...commonHandlers}>
+              {rowContent}
+            </div>
+          );
+        })}
       </div>
 
       {/* Role Legend */}
